@@ -26,7 +26,6 @@ dependencies:
 - relational-query-HDBC
 - HDBC-sqlite3
 - template-haskell
-- relational-record
 - aeson
 - servant-server
 - wai
@@ -44,6 +43,8 @@ library:
     - DeriveAnyClass
     - TypeOperators
     - DeriveGeneric
+    - DuplicateRecordFields
+    - OverloadedLabels
 
 executables:
   server-exe:

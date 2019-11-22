@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 88ab3cc53f0af3112fc96c70f699096685dfdb055aa5125019eb27cd6cb5808d
+-- hash: 191aaca8a7a34c73eb6c0ca9e583510a1ee563fcebde8cacdfc683c3d39230a3
 
 name:           server
 version:        0.1.0.0
@@ -40,7 +40,7 @@ library
       Paths_server
   hs-source-dirs:
       src
-  default-extensions: TemplateHaskell MultiParamTypeClasses FlexibleInstances DataKinds DeriveGeneric DeriveAnyClass TypeOperators DeriveGeneric
+  default-extensions: TemplateHaskell MultiParamTypeClasses FlexibleInstances DataKinds DeriveGeneric DeriveAnyClass TypeOperators DeriveGeneric DuplicateRecordFields OverloadedLabels
   build-depends:
       HDBC-sqlite3
     , aeson
@@ -48,7 +48,6 @@ library
     , product-isomorphic
     , relational-query
     , relational-query-HDBC
-    , relational-record
     , servant-server
     , template-haskell
     , wai
@@ -69,7 +68,6 @@ executable server-exe
     , product-isomorphic
     , relational-query
     , relational-query-HDBC
-    , relational-record
     , servant-server
     , server
     , template-haskell
@@ -92,7 +90,6 @@ test-suite server-test
     , product-isomorphic
     , relational-query
     , relational-query-HDBC
-    , relational-record
     , servant-server
     , server
     , template-haskell

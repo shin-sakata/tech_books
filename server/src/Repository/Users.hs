@@ -1,9 +1,10 @@
 module Repository.Users (runSelectById, runAllUsersName) where
 
-import           Config.DataSource    (connect)
-import           Database.HDBC.Record (runQuery)
+import           Config.DataSource                    (connect)
+import           Data.Functor.ProductIsomorphic.Class ((|$|), (|*|))
+import           Database.HDBC.Record                 (runQuery)
 import           Database.Relational
-import qualified Entity.User          as User
+import qualified Entity.User                          as User
 
 type DB a = IO a
 

@@ -227,3 +227,5 @@ language_extensions:
   - DeriveGeneric
   - DeriveAnyClass
   - TypeOperators
+  - DuplicateRecordFields
+  - OverloadedLabels

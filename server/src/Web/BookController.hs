@@ -1,10 +1,11 @@
 module Web.BookController
     ( book,
-      books
+      books,
+      insBook
     ) where
 
 import           Control.Monad.IO.Class (liftIO)
-import           Entity.Book            (Book)
+import           Entity.Book            (Book, NewBook)
 import           Repository.Books       as Books
 import           Servant                (Handler)
 
@@ -13,3 +14,6 @@ book = liftIO . Books.runSelectById
 
 books :: Handler [Book]
 books = liftIO Books.allBooks
+
+insBook :: NewBook -> Handler Integer
+insBook = liftIO . Books.runInsertNewBook
