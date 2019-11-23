@@ -2,48 +2,55 @@ module Repository.Books
   ( runSelectById
   , allBooks
   , runInsertNewBook
-  , ins
-  , selectById
   )
 where
 
-import           Config.DataSource     (connect)
-import           Database.HDBC.Record  (runInsert, runQuery)
-import           Database.HDBC.Sqlite3 (Connection)
-import           Database.Relational   (Insert, Relation, insert, query,
-                                        relation, relationalQuery, value,
-                                        wheres, (!), (.=.))
-import           Entity.Book           (Book, NewBook, book)
-import qualified Entity.Book           as Book
+import qualified Config.DataSource             as DS
+import qualified Database.HDBC.Record          as Record
+import qualified Database.HDBC.Sqlite3         as Sqlite3
+import qualified Database.HDBC                 as HDBC
+import qualified Database.Relational           as HRR
+import           Database.Relational            ( (.=.)
+                                                , (!)
+                                                )
+import qualified Entity.Book                   as Book
+import qualified Entity.NewBook                as NBook
+import qualified Control.Exception             as Exception
+import           System.IO                      ( hPrint
+                                                , hPutStrLn
+                                                , stderr
+                                                )
 
-type Select a = Relation () a
+type Select a = HRR.Relation () a
 
-runSelectById :: Int -> IO (Maybe Book)
+runSelectById :: Int -> IO (Maybe Book.Book)
 runSelectById n = do
-  conn  <- connect
-  books <- runQuery conn (relationalQuery $ selectById n) ()
+  conn  <- DS.connect
+  books <- Record.runQuery conn (HRR.relationalQuery $ selectById n) ()
   return $ safeHead books
   where safeHead xs = if length xs /= 0 then Just (head xs) else Nothing
 
-selectById :: Int -> Select Book
-selectById n = relation $ do
-  b <- query book
-  wheres $ b ! Book.id' .=. value n
+selectById :: Int -> Select Book.Book
+selectById n = HRR.relation $ do
+  b <- HRR.query Book.book
+  HRR.wheres $ b ! Book.id' .=. HRR.value n
   return b
 
-allBooks :: IO [Book]
+allBooks :: IO [Book.Book]
 allBooks = do
-  conn <- connect
-  runQuery conn (relationalQuery $ relation $ query book) ()
+  conn <- DS.connect
+  Record.runQuery conn
+                  (HRR.relationalQuery $ HRR.relation $ HRR.query Book.book)
+                  ()
 
+insertNewBook :: NBook.NewBook -> Sqlite3.Connection -> IO Integer
+insertNewBook nBook conn = Record.runInsert conn ins nBook
+  where ins = HRR.insert NBook.piNewBook
 
-ins :: Insert NewBook
-ins = insert Book.piNewBook
-
-insertNewBook :: NewBook -> Connection -> IO Integer
-insertNewBook nBook conn = runInsert conn ins nBook
-
-runInsertNewBook :: NewBook -> IO Integer
+runInsertNewBook :: NBook.NewBook -> IO Integer
 runInsertNewBook nBook = do
-  conn <- connect
-  insertNewBook nBook conn
+  conn <- DS.connect
+  HDBC.withTransaction conn $ \c ->
+    insertNewBook nBook c `Exception.catch` \e -> do
+      hPrint stderr (e :: HDBC.SqlError)
+      return 0

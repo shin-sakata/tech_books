@@ -13,11 +13,13 @@ ENV PATH ~/.local/bin:$PATH
 ENV PATH $(stack path --local-bin):$PATH
 
 RUN git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
-RUN cd haskell-ide-engine && stack ./install.hs hie-8.6.5
-RUN cd haskell-ide-engine && stack ./install.hs build-data
+RUN cd /haskell-ide-engine && stack ./install.hs hie-8.6.5
+RUN cd /haskell-ide-engine && stack ./install.hs build-data
 
 ENV PATH $(stack path --compiler-bin):$PATH
 
 RUN echo PATH=~/.local/bin:$PATH >> /root/.bashrc && \
     echo PATH=$(stack path --local-bin):$PATH >> /root/.bashrc && \
     echo PATH=$(stack path --compiler-bin):$PATH >> /root/.bashrc
+
+RUN apt install -y stylish-haskell

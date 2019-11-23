@@ -1,19 +1,21 @@
 module Web.BookController
-    ( book,
-      books,
-      insBook
-    ) where
+  ( book
+  , books
+  , insBook
+  )
+where
 
-import           Control.Monad.IO.Class (liftIO)
-import           Entity.Book            (Book, NewBook)
-import           Repository.Books       as Books
-import           Servant                (Handler)
+import           Control.Monad.IO.Class         ( liftIO )
+import qualified Entity.Book                   as Book
+import qualified Entity.NewBook                as NB
+import qualified Repository.Books              as RB
+import qualified Servant                       as SV
 
-book :: Int -> Handler (Maybe Book)
-book = liftIO . Books.runSelectById
+book :: Int -> SV.Handler (Maybe Book.Book)
+book = liftIO . RB.runSelectById
 
-books :: Handler [Book]
-books = liftIO Books.allBooks
+books :: SV.Handler [Book.Book]
+books = liftIO RB.allBooks
 
-insBook :: NewBook -> Handler Integer
-insBook = liftIO . Books.runInsertNewBook
+insBook :: NB.NewBook -> SV.Handler Integer
+insBook = liftIO . RB.runInsertNewBook

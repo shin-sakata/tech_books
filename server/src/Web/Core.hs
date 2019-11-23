@@ -2,7 +2,8 @@ module Web.Core
     ( startApp
     ) where
 
-import           Entity.Book              (Book, NewBook)
+import           Entity.Book              (Book)
+import           Entity.NewBook           (NewBook)
 import           Network.Wai
 import           Network.Wai.Handler.Warp
 import           Servant

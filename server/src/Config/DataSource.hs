@@ -3,8 +3,9 @@ module Config.DataSource
   )
 where
 
-import           Database.HDBC.Sqlite3 (Connection, connectSqlite3)
+import qualified Database.HDBC.Sqlite3         as Sqlite3
+
 
 -- コネクションを得る関数
-connect :: IO Connection
-connect = connectSqlite3 "books.db"
+connect :: IO Sqlite3.Connection
+connect = Sqlite3.connectSqlite3 "books.db"

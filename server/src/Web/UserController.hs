@@ -1,14 +1,15 @@
 module Web.UserController
-    ( userName,
-      userNames
-    ) where
+  ( userName
+  , userNames
+  )
+where
 
-import           Control.Monad.IO.Class (liftIO)
-import           Repository.Users       as Users
-import           Servant                (Handler)
+import           Control.Monad.IO.Class         ( liftIO )
+import qualified Repository.Users              as RU
+import qualified Servant                       as SV
 
-userName :: Int -> Handler (Maybe String)
-userName = liftIO . Users.runSelectById
+userName :: Int -> SV.Handler (Maybe String)
+userName = liftIO . RU.runSelectById
 
-userNames:: Handler [String]
-userNames = liftIO Users.runAllUsersName
+userNames :: SV.Handler [String]
+userNames = liftIO RU.runAllUsersName

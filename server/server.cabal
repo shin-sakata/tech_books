@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 191aaca8a7a34c73eb6c0ca9e583510a1ee563fcebde8cacdfc683c3d39230a3
+-- hash: 6bfde46d5bd7d4ee11b1d52d06d87ff7a7ce133fae906459366f6d526d9ed368
 
 name:           server
 version:        0.1.0.0
@@ -30,6 +30,7 @@ library
       Config.DataSource
       Config.Sqlite3
       Entity.Book
+      Entity.NewBook
       Entity.User
       Repository.Books
       Repository.Users
@@ -42,7 +43,8 @@ library
       src
   default-extensions: TemplateHaskell MultiParamTypeClasses FlexibleInstances DataKinds DeriveGeneric DeriveAnyClass TypeOperators DeriveGeneric DuplicateRecordFields OverloadedLabels
   build-depends:
-      HDBC-sqlite3
+      HDBC
+    , HDBC-sqlite3
     , aeson
     , base >=4.7 && <5
     , product-isomorphic
@@ -62,7 +64,8 @@ executable server-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
-      HDBC-sqlite3
+      HDBC
+    , HDBC-sqlite3
     , aeson
     , base >=4.7 && <5
     , product-isomorphic
@@ -84,7 +87,8 @@ test-suite server-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      HDBC-sqlite3
+      HDBC
+    , HDBC-sqlite3
     , aeson
     , base >=4.7 && <5
     , product-isomorphic
